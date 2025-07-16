@@ -126,11 +126,13 @@ def home():
 def predict():
     data = request.get_json()
     user_input = data.get('input') if data else None
-    # Always use Gemini, ignore use_gemini from request
     if not user_input:
         return jsonify({"error": "No input provided"}), 400
     response = bot.ask_gemini(user_input)
     return jsonify({"message": response})
 
+import os
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
